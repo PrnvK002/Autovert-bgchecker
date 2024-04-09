@@ -16,27 +16,32 @@ export const authLogin = asyncHandler(async (req: Request, res: Response) => {
   if (!isAdmin) {
     const version = await Version.findOne(
       {},
-      { _id: 1 },
+      { _id: 1, order: 1, fieldsId: 1 },
       { sort: { _id: -1 } }
-    ).populate('fieldsId');
+    ).populate("fieldsId");
     console.log("version", version);
     const user = new Users({
       email: body.email,
       role: "Applicant",
       version: version?._id,
-      
-    })
+    });
     const newUser = await user.save();
-    console.log("created new user",newUser);
+    console.log("created new user", newUser);
     responseData = {
       token: generateToken(String(user._id)),
       user: { email: user.email, role: user.role },
       fields: version?.fieldsId,
-      order: version?.order
-    }
-  } else if (isAdmin && await isAdmin.matchPassword(body.password)) {
+      order: version?.order,
+    };
+  } else if (
+    isAdmin.role === "Admin" &&
+    (await isAdmin.matchPassword(body.password))
+  ) {
     responseData.token = generateToken(isAdmin._id);
     responseData.user = { email: isAdmin.email, role: isAdmin.role };
+  } else if (isAdmin) {
+    res.status(403);
+    throw new Error("Already applied!");
   }
   res.status(200).json({ data: responseData });
 });

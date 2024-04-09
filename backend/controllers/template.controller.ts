@@ -16,6 +16,7 @@ export const addTemplate = asyncHandler(async (req: Request, res: Response) => {
     bgColor,
   });
   const temp = await template.save();
+  console.log("template",temp);
   const oldVersion = await Version.findOne({}, {}, { sort: { _id: -1 } });
   const newVersion = await Version.create({
     templateId: template._id,

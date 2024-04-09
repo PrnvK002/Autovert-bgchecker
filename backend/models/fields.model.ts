@@ -8,6 +8,7 @@ const fieldSchema = new Schema(
       default: true,
     },
     type: String,
+    inputType: String,
   },
   { _id: false }
 );

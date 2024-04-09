@@ -49,7 +49,7 @@ userSchema.methods.matchPassword = async function (password: string) {
 };
 
 userSchema.statics.checkIsadmin = function (email: String): Promise<any> {
-  return this.findOne({ email: email, role: 'Admin' });
+  return this.findOne({ email: email});
 };
 
 export const Users = model<userDocType, userModeltype>("Users", userSchema);

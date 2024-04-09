@@ -21,13 +21,6 @@ export const getVersionInfo = asyncHandler(
 export const updateOrder = asyncHandler(async (req: Request, res: Response) => {
   console.log("udpateorder", req.body);
   const { templateId, order, fieldsId } = req.body;
-  const checkExists = await Version.findOne({
-    order: { $all: [...order] }
-  })
-  if(checkExists){
-    res.status(403);
-    throw new Error("Order already Exists");
-  }
   const udateVersion = await Version.create({
     templateId: templateId,
     order: order,

@@ -7,15 +7,18 @@ import cors from "cors";
 import connectDB from "./config/db.config";
 import { errorHandler, notFound } from "./middlewares/errorHandler.middleware";
 
-
 //route imports
 import authRoutes from "./routes/auth.router";
+import templateRoutes from "./routes/template.router";
+import fieldRoutes from "./routes/field.router";
+import userRoutes from "./routes/user.router";
+import versionRoutes from "./routes/version.router";
 
 //For env File
 dotenv.config();
 
 //for connecting db
-connectDB()
+connectDB();
 
 const app: Application = express();
 const port = process.env.PORT || 8000;
@@ -31,6 +34,10 @@ app.use(logger("dev"));
 
 //setting up route modules
 app.use("/auth", authRoutes);
+app.use("/template", templateRoutes);
+app.use("/field", fieldRoutes);
+app.use("/user", userRoutes);
+app.use("/version", versionRoutes);
 
 //====================== Error handling middleware ==========================
 
