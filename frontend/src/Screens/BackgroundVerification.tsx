@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 
 const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
 
+//the idea is to fetch the order of the stepper on the first api and then fetch the fields essential and their type of input from the next click of next button
 export default function BacgroundVerification() {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
