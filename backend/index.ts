@@ -33,11 +33,11 @@ app.use(bodyParser.json());
 app.use(logger("dev"));
 
 //setting up route modules
-app.use("/auth", authRoutes);
-app.use("/template", templateRoutes);
-app.use("/field", fieldRoutes);
-app.use("/user", userRoutes);
-app.use("/version", versionRoutes);
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/template", templateRoutes);
+app.use("/api/v1/field", fieldRoutes);
+app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/version", versionRoutes);
 
 //====================== Error handling middleware ==========================
 
