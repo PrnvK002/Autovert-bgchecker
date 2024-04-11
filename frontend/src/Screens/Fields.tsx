@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getFields } from "../redux/reducer/field.reducer";
+import { IRootState } from "../redux/store";
 
 export default function Fields() {
   const dispatch = useDispatch();
@@ -8,7 +9,12 @@ export default function Fields() {
     dispatch(getFields() as any);
   }, []);
 
-  return <div>  
+  const { fields } = useSelector((state: IRootState) => state.fieldReducer);
+  useEffect(() => {
+    console.log("fields on useEffect", fields);
+  }, [fields]);
+
+  return <>
     
-  </div>;
+  </>;
 }

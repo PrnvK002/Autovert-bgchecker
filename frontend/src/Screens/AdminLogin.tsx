@@ -19,7 +19,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (Object.keys(user).length) navigate("/verify");
+    if (Object.keys(user).length) navigate("/admin");
   });
 
   return (

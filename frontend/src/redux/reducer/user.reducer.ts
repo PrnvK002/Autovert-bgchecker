@@ -10,10 +10,11 @@ const initialState = {
 
 export const loginUser = createAsyncThunk(
   "user/login",
-  async (payload:any, { rejectWithValue }) => {
+  async (payload: any, { rejectWithValue }) => {
     try {
       const { data } = await Client.post("/auth/login", payload);
       console.log("response from login", data);
+      localStorage.setItem("token", JSON.stringify(data.data.token));
       return data.data;
     } catch (error: any) {
       console.log("error", error);
@@ -36,10 +37,10 @@ const userSlice = createSlice({
       state.loading = true;
       state.err = "";
     });
-    builder.addCase(loginUser.rejected, (state,action:any) => {
+    builder.addCase(loginUser.rejected, (state, action: any) => {
       state.loading = false;
       state.err = action.payload;
-    })
+    });
   },
 });
 
