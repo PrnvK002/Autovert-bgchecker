@@ -7,7 +7,11 @@ import { Version } from "../models/versions.model";
 
 export const getVersionInfo = asyncHandler(
   async (req: Request, res: Response) => {
-    const versionInfo = await Version.findOne({}, {}, { sort: { _id: -1 } })
+    const versionInfo = await Version.findOne(
+      {},
+      { _id: 0, __v: 0 },
+      { sort: { _id: -1 } }
+    )
       .populate("templateId")
       .populate("fieldsId");
 
@@ -26,5 +30,7 @@ export const updateOrder = asyncHandler(async (req: Request, res: Response) => {
     order: order,
     fieldsId: fieldsId,
   });
+  console.log("updated version", udateVersion);
+
   res.status(201).json({ message: "Successfully changed the order" });
 });

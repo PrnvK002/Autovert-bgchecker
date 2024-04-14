@@ -48,7 +48,10 @@ export const submitInfo = asyncHandler(async (req: any, res: Response) => {
 //@access admin
 export const getApplicants = asyncHandler(
   async (req: Request, res: Response) => {
-    const applicants = await Users.find({ role: "Applicant" });
+    const applicants = await Users.find(
+      { role: "Applicant" },
+      { version: 0, __v: 0 }
+    );
     res.status(200).json({ data: applicants });
   }
 );
