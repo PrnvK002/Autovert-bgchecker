@@ -22,7 +22,7 @@ export default function Fields() {
     dispatch(getFields() as any);
   }, []);
 
-  const { fields, loading, success } = useSelector(
+  const { fields, loading, success }:any = useSelector(
     (state: IRootState) => state.fieldReducer
   );
 

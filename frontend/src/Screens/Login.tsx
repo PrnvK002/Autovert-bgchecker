@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Formik } from "formik";
 import { object, string } from "yup";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../redux/reducer/user.reducer";
 import { useNavigate } from "react-router-dom";
-import { IRootState } from '../redux/store';
+import { IRootState } from "../redux/store";
 
 export default function Login() {
   const validationSchema = object({
@@ -15,16 +15,21 @@ export default function Login() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {user} = useSelector((state:IRootState) => state.userReducer);
+  const { user, loading, err }: any = useSelector(
+    (state: IRootState) => state.userReducer
+  );
 
   useEffect(() => {
-    if(Object.keys(user).length) navigate('/verify');
-  })
+    if (Object.keys(user).length) {
+      navigate("/");
+    }
+  });
 
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="border-2 p-[15px] rounded shadow-lg">
         <h3 className="font-bold text-lg text-gray-950">Sign in</h3>
+        {err.length ? <p className="text-sm text-red-500 mt-2">{err}</p> : ""}
         <Formik
           initialValues={{ email: "" }}
           validationSchema={validationSchema}
@@ -41,7 +46,6 @@ export default function Login() {
             handleChange,
             handleBlur,
             handleSubmit,
-            isSubmitting,
           }) => (
             <form onSubmit={handleSubmit}>
               <div className="mt-4">
@@ -65,7 +69,7 @@ export default function Login() {
               <button
                 type="submit"
                 className="text-white bg-blue-800 rounded w-96 h-10 mt-4 shadow-md"
-                disabled={isSubmitting}
+                disabled={loading}
               >
                 Submit
               </button>

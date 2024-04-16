@@ -18,7 +18,7 @@ export const authLogin = asyncHandler(async (req: Request, res: Response) => {
       {},
       { _id: 1, order: 1, fieldsId: 1 },
       { sort: { _id: -1 } }
-    ).populate("fieldsId");
+    ).populate("fieldsId").populate("templateId");
     console.log("version", version);
     const user = new Users({
       email: body.email,
@@ -26,12 +26,13 @@ export const authLogin = asyncHandler(async (req: Request, res: Response) => {
       version: version?._id,
     });
     const newUser = await user.save();
-    console.log("created new user", newUser);
+    console.log("created new user", newUser,version);
     responseData = {
       token: generateToken(String(user._id)),
       user: { email: user.email, role: user.role },
       fields: version?.fieldsId,
       order: version?.order,
+      template: version?.templateId
     };
   } else if (
     isAdmin.role === "Admin" &&

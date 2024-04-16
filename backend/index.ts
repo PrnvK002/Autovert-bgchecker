@@ -24,7 +24,12 @@ const app: Application = express();
 const port = process.env.PORT || 8000;
 
 //setting cors like open to all domains
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  })
+);
 
 // parse application/json
 app.use(bodyParser.json());

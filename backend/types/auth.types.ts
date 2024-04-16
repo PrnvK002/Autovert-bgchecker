@@ -22,4 +22,5 @@ export interface userResponse {
   user: userBody;
   fields?: fields | any;
   order?: String[];
+  template: any;
 }

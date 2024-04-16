@@ -8,8 +8,8 @@ import { addfieldSchema } from "../validation/field.validation";
 const router = Router();
 
 //@desc route for getting field info
-//@access admin
-router.get("/", authenticationMiddleware, restrictedAccess, getFields);
+//@access public
+router.get("/", authenticationMiddleware, getFields);
 
 //@desc route for updating new fields
 //@access admin

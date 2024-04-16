@@ -37,7 +37,7 @@ export const updateField = createAsyncThunk(
   }
 );
 
-const fieldslice = createSlice({
+const fieldslice:any = createSlice({
   name: "field",
   initialState,
   reducers: {

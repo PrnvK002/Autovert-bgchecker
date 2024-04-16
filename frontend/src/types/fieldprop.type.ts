@@ -1,4 +1,3 @@
-
 export interface fieldproptype {
   name: string;
   visibility: boolean;
@@ -48,12 +47,26 @@ export const fieldKeys: fieldkeys = {
 export interface AddfieldModalProps {
   open: boolean;
   handleClose: () => void;
-  handleSubmit: (d:AddFieldParams) => void;
+  handleSubmit: (d: AddFieldParams) => void;
 }
 
-export interface AddFieldParams{
-  category:string;
-  name:string;
-  type:string;
-  inputType:string;
+export interface AddFieldParams {
+  category: string;
+  name: string;
+  type: string;
+  inputType: string;
+}
+
+export interface InputFieldprops {
+  name: string;
+  inputType: string;
+  handleChange: (e: any) => void;
+  value: string | any;
+}
+
+export interface ListfieldProps {
+  tab: string;
+  setData: any;
+  data: any;
+  fields: any;
 }

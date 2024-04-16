@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import { Users } from "../models/user.model";
+import { Version } from "../models/versions.model";
 
 //@desc route for submitting applicant info
 //@access public
 export const submitInfo = asyncHandler(async (req: any, res: Response) => {
+  console.log("submit info", req.body);
+
   const { type, fieldData } = req.body;
   let update;
   switch (type) {
@@ -42,6 +45,7 @@ export const submitInfo = asyncHandler(async (req: any, res: Response) => {
     default:
       break;
   }
+  res.status(200).json({ message: "success" });
 });
 
 //@desc route for gettting applicants
@@ -55,3 +59,39 @@ export const getApplicants = asyncHandler(
     res.status(200).json({ data: applicants });
   }
 );
+
+//@desc router for getting user data
+//@access public
+//@rout /user
+//@method GET
+export const getUser = asyncHandler(async (req: any, res: Response) => {
+  const user = await Users.aggregate([
+    { $match: { _id: req.user._id } },
+    {
+      $lookup: {
+        from: "Version",
+        localField: "version",
+        foreignField: "_id",
+        as: "version",
+      },
+    },
+    {
+      $unwind: "$version",
+    },
+    {
+      $lookup: {
+        from: "Fields",
+        localField: "version.fieldsId",
+        foreignField: "_id",
+        as: "fields",
+      },
+    },
+  ]);
+  res
+    .status(200)
+    .json({
+      user: user[0],
+      order: user[0]?.version.order,
+      fields: user[0].fields,
+    });
+});
