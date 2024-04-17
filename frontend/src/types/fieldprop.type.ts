@@ -60,13 +60,18 @@ export interface AddFieldParams {
 export interface InputFieldprops {
   name: string;
   inputType: string;
-  handleChange: (e: any) => void;
-  value: string | any;
+  handleChange?: (e: any) => void;
+  value?: string | any;
+  handleDocs?: (e: any) => void;
+  tab?: string;
+  register: any;
 }
 
 export interface ListfieldProps {
   tab: string;
-  setData: any;
-  data: any;
+  setData?: any;
+  data?: any;
   fields: any;
+  handleDocs?: (e: any) => void;
+  register: any;
 }

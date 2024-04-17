@@ -1,31 +1,35 @@
 import { InputFieldprops } from "../types/fieldprop.type";
-import TextField from "@mui/material/TextField";
+// import TextField from "@mui/material/TextField";
 
 export default function InputField({
   name,
-  value,
   inputType,
-  handleChange,
+  tab,
+  handleDocs,
+  register,
 }: InputFieldprops) {
   return (
     <div className="mt-5">
-      {/* <label htmlFor={name}>{name}</label>
+      <label htmlFor={name}>{name}</label>
       <br />
-      <input
-        className="border-2 rounded w-80 h-11 p-3"
+      {/* {
+        tab === 'docFields' ? 
+        <Field
+        className="rounded-md h-8 w-80 p-3"
+        placeholder={name}
         type={inputType}
-        onChange={handleChange}
         name={name}
-        value={value}
-      /> */}
-      <TextField
-        color="primary"
-        id="outlined-basic"
-        value={value}
+        value={value ? value : ""}
+        onChange={handleDocs}
+      /> 
+      : 
+    } */}
+      <input
+        className="rounded-md h-8 w-80 p-3"
+        placeholder={name}
         type={inputType}
-        label={name}
-        variant="outlined"
-        onChange={handleChange}
+        name={name}
+        {...register(name)}
       />
     </div>
   );

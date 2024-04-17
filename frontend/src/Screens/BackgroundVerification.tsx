@@ -12,7 +12,9 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../Components/Loader.component";
 import { validateStep } from "../validation/validator";
 import { udpateDetails } from "../redux/reducer/user.reducer";
-
+import { handleFileupload } from "../utils/fileupload.util";
+import { Formik, Form } from "formik";
+import { useForm } from "react-hook-form";
 // const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
 
 enum tabname {
@@ -26,10 +28,11 @@ enum tabname {
 export default function BacgroundVerification() {
   const [activeStep, setActiveStep] = useState(0);
   const [steps, setSteps] = useState([]);
-  const [data, setData] = useState<any>({});
+  // const [data, setData] = useState<any>({});
+  const [uploadDocs, setUploaddocs] = useState<any>({});
   const [error, setError] = useState("");
   let wholeData: any = {};
-
+  const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { order, user, loading, fields, success }: any = useSelector(
@@ -47,13 +50,48 @@ export default function BacgroundVerification() {
     }
   }, [user]);
 
-  const handleSubmit = () => {
-    const fieldData: any = Object.keys(data).map((field: string) => {
-      return {
-        fieldName: field,
-        value: data[field],
-      };
-    });
+  const handleDocs = (e: any) => {
+    console.log("handledocs", e.target.type);
+    if (e.target.type === "file") {
+      setUploaddocs((prev: any) => {
+        return { ...prev, [e.target.name]: e.target.files[0] };
+      });
+    } else {
+      setUploaddocs((prev: any) => {
+        return { ...prev, [e.target.name]: e.target.value };
+      });
+    }
+  };
+
+  const onSubmit = async (data: any) => {
+    const fieldData: any[] = [];
+
+    await Promise.all(
+      Object.keys(data).map(async (field) => {
+        if (
+          typeof data[field] !== "string" &&
+          typeof data[field] !== "number" &&
+          typeof data[field] !== "boolean"
+        ) {
+          try {
+            const file = await handleFileupload(data[field][0]);
+            console.log("file", file, field);
+            fieldData.push({
+              fieldName: field,
+              value: file,
+            });
+          } catch (err) {
+            console.log("error on upload", err);
+          }
+        } else {
+          fieldData.push({
+            fieldName: field,
+            value: String(data[field]),
+          });
+        }
+      })
+    );
+
     dispatch(
       udpateDetails({
         type: order[activeStep],
@@ -62,21 +100,22 @@ export default function BacgroundVerification() {
     );
   };
 
-  const handleNext = () => {
+  const handleNext = (data: any) => {
     console.log("setdata", data);
     const err = validateStep(fields, data, tabname[steps[activeStep]]);
     if (err) {
       setError(err);
     } else {
+      setError("");
       wholeData[activeStep] = data;
-      setData({});
-      handleSubmit();
+      onSubmit(data);
+      // setData({});
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      reset();
     }
   };
 
   const handleBack = () => {
-    setData(wholeData[activeStep - 1]);
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -120,7 +159,7 @@ export default function BacgroundVerification() {
           </Box>
         </React.Fragment>
       ) : (
-        <Box>
+        <form onSubmit={handleSubmit(handleNext)}>
           <div className="min-h-[80vh] pt-10">
             {error.length ? (
               <p className="text-red-600 text-sm text-center">{error}</p>
@@ -129,9 +168,9 @@ export default function BacgroundVerification() {
             )}
             <ListFields
               tab={tabname[steps[activeStep]]}
+              register={register}
               fields={fields}
-              setData={setData}
-              data={data}
+              handleDocs={handleDocs}
             />
           </div>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
@@ -144,11 +183,11 @@ export default function BacgroundVerification() {
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleNext}>
+            <Button type="submit">
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
           </Box>
-        </Box>
+        </form>
       )}
     </Box>
   );

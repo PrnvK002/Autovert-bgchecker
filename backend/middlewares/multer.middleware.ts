@@ -10,11 +10,12 @@ const department_fileFilter = (req:Request, file: any, cb:any) => {
     file.mimetype.split("/")[1] === "jpg" ||
     file.mimetype.split("/")[1] === "png" ||
     file.mimetype.split("/")[1] === "jpeg"||
+    file.mimetype.split("/")[1] === "pdf"||
     file.mimetype.split("/")[1] === "svg+xml"
   ) {
     cb(null, true);
   } else {
-    cb(new Error("Not a png/jpg/jpeg"), false);
+    cb(new Error("Not a png/jpg/jpeg/pdf"), false);
   }
 };
 

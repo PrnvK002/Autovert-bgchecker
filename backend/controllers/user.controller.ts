@@ -6,7 +6,7 @@ import { Version } from "../models/versions.model";
 //@desc route for submitting applicant info
 //@access public
 export const submitInfo = asyncHandler(async (req: any, res: Response) => {
-  console.log("submit info", req.body);
+  console.log("submit info", req.body, req.user);
 
   const { type, fieldData } = req.body;
   let update;
@@ -87,11 +87,9 @@ export const getUser = asyncHandler(async (req: any, res: Response) => {
       },
     },
   ]);
-  res
-    .status(200)
-    .json({
-      user: user[0],
-      order: user[0]?.version.order,
-      fields: user[0].fields,
-    });
+  res.status(200).json({
+    user: user[0],
+    order: user[0]?.version.order,
+    fields: user[0].fields,
+  });
 });

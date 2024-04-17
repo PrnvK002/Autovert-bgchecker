@@ -5,7 +5,7 @@ export const infoSchema = Joi.object({
   fieldData: Joi.array().items(
     Joi.object({
       fieldName: Joi.string(),
-      value: Joi.string(),
+      value: Joi.any(),
     })
   ),
 });

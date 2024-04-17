@@ -7,15 +7,18 @@ import cors from "cors";
 import connectDB from "./config/db.config";
 import { errorHandler, notFound } from "./middlewares/errorHandler.middleware";
 
+//For env File
+dotenv.config();
+
 //route imports
 import authRoutes from "./routes/auth.router";
 import templateRoutes from "./routes/template.router";
 import fieldRoutes from "./routes/field.router";
 import userRoutes from "./routes/user.router";
 import versionRoutes from "./routes/version.router";
+import uploadRoutes from "./routes/upload.router";
 
-//For env File
-dotenv.config();
+
 
 //for connecting db
 connectDB();
@@ -43,6 +46,7 @@ app.use("/api/v1/template", templateRoutes);
 app.use("/api/v1/field", fieldRoutes);
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/version", versionRoutes);
+app.use("/api/v1/upload", uploadRoutes);
 
 //====================== Error handling middleware ==========================
 
