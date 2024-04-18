@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import { Users } from "../models/user.model";
-import { Version } from "../models/versions.model";
 
 //@desc route for submitting applicant info
 //@access public
@@ -54,8 +53,11 @@ export const getApplicants = asyncHandler(
   async (req: Request, res: Response) => {
     const applicants = await Users.find(
       { role: "Applicant" },
-      { version: 0, __v: 0 }
+      { version: 0, __v: 0 },
+      { sort: { createdAt: -1 } }
     );
+    console.log("applicants", applicants);
+
     res.status(200).json({ data: applicants });
   }
 );
@@ -92,4 +94,14 @@ export const getUser = asyncHandler(async (req: any, res: Response) => {
     order: user[0]?.version.order,
     fields: user[0].fields,
   });
+});
+
+export const getApplicant = asyncHandler(async (req: any, res: Response) => {
+  console.log(req.params.id);
+  const { id } = req.params;
+  const userData = await Users.findOne(
+    { _id: id },
+    { _id: 0, role: 0, password: 0 }
+  );
+  res.status(200).json({ data: userData });
 });

@@ -13,9 +13,13 @@ export default function Home() {
 
   return (
     <>
-      <Themeprovider>
-        <BackgroundVerification />
-      </Themeprovider>
+      {isLoggedIn ? (
+        <Themeprovider>
+          <BackgroundVerification />
+        </Themeprovider>
+      ) : (
+        "Home for applicant use only"
+      )}
     </>
   );
 }

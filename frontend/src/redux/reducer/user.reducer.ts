@@ -23,6 +23,8 @@ const initialState = {
   success: false,
   fields: fields,
   template: template,
+  applicants: [],
+  applicant: {},
 };
 
 export const loginUser = createAsyncThunk(
@@ -54,6 +56,32 @@ export const udpateDetails = createAsyncThunk(
   }
 );
 
+export const getApplicants = createAsyncThunk(
+  "user/applicants",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await Client.get("/user/applicants");
+      console.log("datafrom appliacnst", data);
+      return data.data;
+    } catch (error: any) {
+      console.log("error on getapplicants", error);
+      rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const getApplicant = createAsyncThunk(
+  "user/applicant/get",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const { data } = await Client.get(`/user/applicant/${id}`);
+      return data.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -62,16 +90,18 @@ const userSlice = createSlice({
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.user = action.payload.user;
       state.loading = false;
-      state.order = action.payload.order;
-      state.fields = action.payload.fields;
-      state.template = action.payload.template;
       sessionStorage.setItem("user", JSON.stringify(action.payload.user));
-      sessionStorage.setItem("order", JSON.stringify(action.payload.order));
-      sessionStorage.setItem("fields", JSON.stringify(action.payload.fields));
-      sessionStorage.setItem(
-        "template",
-        JSON.stringify(action.payload.template)
-      );
+      if (action.payload.user.role !== "Admin") {
+        state.order = action.payload.order;
+        state.fields = action.payload.fields;
+        state.template = action.payload.template;
+        sessionStorage.setItem("order", JSON.stringify(action.payload.order));
+        sessionStorage.setItem("fields", JSON.stringify(action.payload.fields));
+        sessionStorage.setItem(
+          "template",
+          JSON.stringify(action.payload.template)
+        );
+      }
     });
     builder.addCase(loginUser.pending, (state, _) => {
       state.loading = true;
@@ -91,6 +121,30 @@ const userSlice = createSlice({
       state.success = false;
     });
     builder.addCase(udpateDetails.rejected, (state, action: any) => {
+      state.loading = false;
+      state.err = action.payload;
+    });
+    builder.addCase(getApplicants.fulfilled, (state, action) => {
+      state.loading = false;
+      state.applicants = action.payload;
+    });
+    builder.addCase(getApplicants.pending, (state, _) => {
+      state.loading = true;
+      state.err = "";
+    });
+    builder.addCase(getApplicants.rejected, (state, action: any) => {
+      state.loading = false;
+      state.err = action.payload;
+    });
+    builder.addCase(getApplicant.fulfilled, (state, action) => {
+      state.loading = false;
+      state.applicant = action.payload;
+    });
+    builder.addCase(getApplicant.pending, (state, _) => {
+      state.loading = true;
+      state.err = "";
+    });
+    builder.addCase(getApplicant.rejected, (state, action: any) => {
       state.loading = false;
       state.err = action.payload;
     });

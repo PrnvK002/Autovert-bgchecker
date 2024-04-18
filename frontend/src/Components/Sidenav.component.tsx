@@ -41,14 +41,14 @@ export default function TemporaryDrawer() {
     <Box sx={{ width: "100%" }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
         {drawerMenu.map((menu, index) => (
-          <>
-            <ListItem key={menu.Name} disablePadding>
+          <React.Fragment key={menu.Name}>
+            <ListItem disablePadding>
               <ListItemButton onClick={() => navigate(menu.path)}>
                 <ListItemText primary={menu.Name} />
               </ListItemButton>
             </ListItem>
             <Divider />
-          </>
+          </React.Fragment>
         ))}
       </List>
     </Box>
