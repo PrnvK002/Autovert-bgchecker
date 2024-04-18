@@ -5,7 +5,6 @@ import { ListfieldProps, field } from "../types/fieldprop.type";
 export default function ListFields({
   tab,
   fields,
-  handleDocs,
   register
 }: ListfieldProps) {
   // useEffect(() => {
@@ -22,8 +21,6 @@ export default function ListFields({
                   <InputField
                     name={field.name}
                     inputType={field.inputType}
-                    handleDocs={handleDocs}
-                    tab={tab}
                     register={register}
                   />
                 </>

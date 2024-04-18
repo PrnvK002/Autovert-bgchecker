@@ -13,9 +13,9 @@ import Loader from "../Components/Loader.component";
 import { validateStep } from "../validation/validator";
 import { udpateDetails } from "../redux/reducer/user.reducer";
 import { handleFileupload } from "../utils/fileupload.util";
-import { Formik, Form } from "formik";
 import { useForm } from "react-hook-form";
 // const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+import VerifiedImage from "../assets/verfied.webp";
 
 enum tabname {
   PERSONALINFO = "personalInfoFields",
@@ -29,7 +29,6 @@ export default function BacgroundVerification() {
   const [activeStep, setActiveStep] = useState(0);
   const [steps, setSteps] = useState([]);
   // const [data, setData] = useState<any>({});
-  const [uploadDocs, setUploaddocs] = useState<any>({});
   const [error, setError] = useState("");
   let wholeData: any = {};
   const { register, handleSubmit, reset } = useForm();
@@ -49,19 +48,6 @@ export default function BacgroundVerification() {
       navigate("/login");
     }
   }, [user]);
-
-  const handleDocs = (e: any) => {
-    console.log("handledocs", e.target.type);
-    if (e.target.type === "file") {
-      setUploaddocs((prev: any) => {
-        return { ...prev, [e.target.name]: e.target.files[0] };
-      });
-    } else {
-      setUploaddocs((prev: any) => {
-        return { ...prev, [e.target.name]: e.target.value };
-      });
-    }
-  };
 
   const onSubmit = async (data: any) => {
     const fieldData: any[] = [];
@@ -149,15 +135,18 @@ export default function BacgroundVerification() {
           : ""}
       </Stepper>
       {activeStep === steps.length ? (
-        <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
-          </Typography>
+        <>
+          <div className="min-h-[80vh] pt-10 flex flex-col justify-center items-center">
+            <Typography sx={{ mt: 2, mb: 1 }}>
+              You have successfully Verified. Thank you For your Response.
+            </Typography>
+            <img src={VerifiedImage} alt="loading..." />
+          </div>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Box sx={{ flex: "1 1 auto" }} />
             <Button onClick={handleReset}>Reset</Button>
           </Box>
-        </React.Fragment>
+        </>
       ) : (
         <form onSubmit={handleSubmit(handleNext)}>
           <div className="min-h-[80vh] pt-10">
@@ -170,7 +159,6 @@ export default function BacgroundVerification() {
               tab={tabname[steps[activeStep]]}
               register={register}
               fields={fields}
-              handleDocs={handleDocs}
             />
           </div>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>

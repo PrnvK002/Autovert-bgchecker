@@ -4,8 +4,6 @@ import { InputFieldprops } from "../types/fieldprop.type";
 export default function InputField({
   name,
   inputType,
-  tab,
-  handleDocs,
   register,
 }: InputFieldprops) {
   return (
