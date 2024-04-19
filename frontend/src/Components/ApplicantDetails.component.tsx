@@ -78,8 +78,6 @@ export default function DetailModal({ open, handleClose }: props) {
           </Box>
           {Object.keys(applicant).length
             ? applicant[tabs[value]].map((field: any, index: number) => {
-                console.log("field on map", field);
-
                 return (
                   <ListFieldValues
                     key={index}

@@ -1,4 +1,12 @@
-import { Schema, Types, model } from "mongoose";
+import { Schema, model } from "mongoose";
+
+const validationSchema = new Schema(
+  {
+    ruleName: String,
+    value: Schema.Types.Mixed,
+  },
+  { _id: false }
+);
 
 const fieldSchema = new Schema(
   {
@@ -7,7 +15,8 @@ const fieldSchema = new Schema(
       type: Boolean,
       default: true,
     },
-    type: String,
+    options: { type: [String], required: false },
+    validations: [validationSchema],
     inputType: String,
   },
   { _id: false }
