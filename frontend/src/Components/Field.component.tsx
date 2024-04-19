@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Checkbox,
   FormControl,
@@ -7,11 +6,12 @@ import {
   Select,
 } from "@mui/material";
 import { fieldproptype } from "../types/fieldprop.type";
+import Option from "./Option.component";
 
 export default function Field({
   name,
   visibility,
-  type,
+  options,
   inputType,
   handleChange,
   index,
@@ -28,19 +28,6 @@ export default function Field({
       />
       <p className="ms-2">{name}</p>
       <FormControl sx={{ marginLeft: "10px", width: "10rem" }}>
-        <InputLabel id="demo-simple-select-label">Data Type</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={type}
-          label="Age"
-          onChange={(e) => handleChange("type", e.target.value, index)}
-        >
-          <MenuItem value="String">String</MenuItem>
-          <MenuItem value="Number">Number</MenuItem>
-        </Select>
-      </FormControl>
-      <FormControl sx={{ marginLeft: "10px", width: "10rem" }}>
         <InputLabel id="demo-simple-select-label">Input Type</InputLabel>
         <Select
           labelId="demo-simple-select-label"
@@ -54,8 +41,25 @@ export default function Field({
           <MenuItem value="number">Number</MenuItem>
           <MenuItem value="date">Date</MenuItem>
           <MenuItem value="file">File</MenuItem>
+          <MenuItem value="radio">Radio</MenuItem>
+          <MenuItem value="select">Select</MenuItem>
+
         </Select>
       </FormControl>
+      <div className="flex">
+        {options?.length
+          ? options.map((o: string, index: number) => {
+              return (
+                <Option
+                  name={o}
+                  index={index}
+                  handleRemove={() => {}}
+                  editable={false}
+                />
+              );
+            })
+          : ""}
+      </div>
     </div>
   );
 }

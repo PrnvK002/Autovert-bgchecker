@@ -1,12 +1,9 @@
 import InputField from "./InputField.component";
 import { ListfieldProps, field } from "../types/fieldprop.type";
+import React from "react";
 // import { handleFileupload } from "../utils/fileupload.util";
 
-export default function ListFields({
-  tab,
-  fields,
-  register
-}: ListfieldProps) {
+export default function ListFields({ tab, fields, register }: ListfieldProps) {
   // useEffect(() => {
   //   console.log("listfields", fields, tab);
   // }, [fields, tab]);
@@ -17,13 +14,14 @@ export default function ListFields({
         {fields
           ? fields[tab].map((field: field) =>
               field.visibilty ? (
-                <>
+                <React.Fragment key={field.name}>
                   <InputField
                     name={field.name}
                     inputType={field.inputType}
+                    options={field.options}
                     register={register}
                   />
-                </>
+                </React.Fragment>
               ) : (
                 <></>
               )

@@ -16,6 +16,8 @@ export const addFields = asyncHandler(async (req: Request, res: Response) => {
     professionalInfoFields,
     docFields,
   } = req.body;
+  console.log("req,body", req.body);
+
   const fields = new Fields({
     personalInfoFields,
     educationInfoFeilds,

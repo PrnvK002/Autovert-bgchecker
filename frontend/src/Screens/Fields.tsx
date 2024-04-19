@@ -22,7 +22,7 @@ export default function Fields() {
     dispatch(getFields() as any);
   }, []);
 
-  const { fields, loading, success }:any = useSelector(
+  const { fields, loading, success }: any = useSelector(
     (state: IRootState) => state.fieldReducer
   );
 
@@ -49,16 +49,29 @@ export default function Fields() {
   const handleSubmit = ({
     category,
     name,
+    options,
     inputType,
-    type,
+    rules,
   }: AddFieldParams) => {
     setFielddata((prev: any) => {
-      let temp = prev[category];
-      console.log("temp",temp);
-      
-      temp.push({ name, visibilty: true, type, inputType });
-      return { ...prev, [category]: temp };
+      if (prev && prev[category]) {
+        let temp = prev[category];
+        temp.push({
+          name,
+          visibilty: true,
+          options,
+          inputType,
+          validations: rules,
+        });
+        return { ...prev, [category]: temp };
+      } else {
+        return {
+          ...prev,
+          [category]: [{ name, visibilty: true, options, inputType, validations: rules, }],
+        };
+      }
     });
+    setOpenmodal(false);
   };
 
   return (
@@ -79,7 +92,7 @@ export default function Fields() {
         ))}
       <div className="flex my-4">
         <Button variant="contained" disabled={loading} onClick={handleUpdate}>
-          Update Template
+          Update Fields
         </Button>
         <Button
           sx={{ marginLeft: "1rem" }}

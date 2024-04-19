@@ -10,8 +10,9 @@ export interface fieldproptype {
 export interface field {
   inputType: string;
   name: string;
-  type: string;
   visibilty: boolean;
+  options?: string[];
+  rules?: Rule[];
 }
 
 export interface fields {
@@ -50,11 +51,16 @@ export interface AddfieldModalProps {
   handleSubmit: (d: AddFieldParams) => void;
 }
 
+interface Rule {
+  ruleName: string;
+  value: any;
+}
 export interface AddFieldParams {
   category: string;
   name: string;
-  type: string;
+  options?: string[];
   inputType: string;
+  rules?: Rule[];
 }
 
 export interface InputFieldprops {
@@ -63,6 +69,7 @@ export interface InputFieldprops {
   handleChange?: (e: any) => void;
   value?: string | any;
   handleDocs?: (e: any) => void;
+  options: any;
   tab?: string;
   register: any;
 }

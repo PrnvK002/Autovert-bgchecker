@@ -2,7 +2,6 @@ import {
   field,
   fieldfamilyproptype,
   fieldKeys,
-  fields,
 } from "../types/fieldprop.type";
 import Field from "./Field.component";
 
@@ -30,7 +29,7 @@ export default function FieldFamily({
                 key={field.name}
                 name={field.name}
                 visibility={field.visibilty}
-                type={field.type}
+                options={field.options}
                 inputType={field.inputType}
                 handleChange={handleChange}
                 index={index}

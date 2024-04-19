@@ -85,7 +85,20 @@ export const getApplicant = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.user = {};
+      state.fields = {};
+      state.template = {};
+      state.applicants = [];
+      state.applicant = {};
+      sessionStorage.removeItem("order");
+      sessionStorage.removeItem("fields");
+      sessionStorage.removeItem("user");
+      sessionStorage.removeItem("template");
+      localStorage.removeItem("token");
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.user = action.payload.user;
@@ -150,5 +163,7 @@ const userSlice = createSlice({
     });
   },
 });
+
+export const {logout} = userSlice.actions;
 
 export default userSlice.reducer;

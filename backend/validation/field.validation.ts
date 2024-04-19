@@ -5,8 +5,14 @@ export const addfieldSchema = Joi.object({
     Joi.object({
       name: Joi.string(),
       visibility: Joi.boolean(),
-      type: Joi.string(),
       inputType: Joi.string(),
+      options: Joi.array().items(Joi.string()),
+      validations: Joi.array().items(
+        Joi.object({
+          ruleName: Joi.string(),
+          value: Joi.any(),
+        })
+      ),
     })
   ),
   educationInfoFeilds: Joi.array().items(
