@@ -1,6 +1,7 @@
 import React from "react";
 import { InputFieldprops } from "../types/fieldprop.type";
 // import TextField from "@mui/material/TextField";
+import { InputLabel } from '@mui/material';
 
 export default function InputField({
   name,
@@ -10,13 +11,12 @@ export default function InputField({
 }: InputFieldprops) {
   return (
     <div className="mt-5">
-      <label htmlFor={name}>{name}</label>
-      <br />
+      <InputLabel color="error" htmlFor={name}>{name}</InputLabel>
       {inputType === "radio" ? (
         options.length ? (
           options.map((option: any) => {
             return (
-              <React.Fragment key={option}>
+              <div className="flex" key={option}>
                 <input
                   {...register(name)}
                   className="ms-3"
@@ -24,8 +24,8 @@ export default function InputField({
                   value={option}
                   id="field-wind"
                 />
-                <label className="ms-2" htmlFor="field-wind">{option}</label>
-              </React.Fragment>
+                <InputLabel className="ms-2" htmlFor="field-wind">{option}</InputLabel>
+              </div>
             );
           })
         ) : (

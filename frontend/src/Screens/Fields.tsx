@@ -53,13 +53,15 @@ export default function Fields() {
     inputType,
     rules,
   }: AddFieldParams) => {
+    console.log("handlesubmit", category, name, options, inputType, rules);
+
     setFielddata((prev: any) => {
       if (prev && prev[category]) {
-        let temp = prev[category];
+        let temp = JSON.parse(JSON.stringify(prev[category]));
         temp.push({
           name,
           visibilty: true,
-          options,
+          options: options,
           inputType,
           validations: rules,
         });
@@ -68,7 +70,13 @@ export default function Fields() {
         return {
           ...prev,
           [category]: [
-            { name, visibilty: true, options, inputType, validations: rules },
+            {
+              name,
+              visibilty: true,
+              options: options,
+              inputType,
+              validations: rules,
+            },
           ],
         };
       }

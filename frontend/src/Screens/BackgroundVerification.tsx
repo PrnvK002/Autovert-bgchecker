@@ -15,7 +15,7 @@ import { logout, udpateDetails } from "../redux/reducer/user.reducer";
 import { handleFileupload } from "../utils/fileupload.util";
 import { useForm } from "react-hook-form";
 // const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
-import VerifiedImage from "../assets/verfied.webp";
+import VerifiedImage from "../assets/Verified.png";
 
 enum tabname {
   PERSONALINFO = "personalInfoFields",
@@ -116,68 +116,70 @@ export default function BacgroundVerification() {
       sx={{
         bgcolor: "success.main",
       }}
-      className="p-10 h-screen"
+      className="p-10 h-screen flex justify-center"
     >
-      <Loader open={loading} />
-      <Stepper activeStep={activeStep}>
-        {steps.length > 0
-          ? steps?.map((label) => {
-              const stepProps: { completed?: boolean } = {};
-              const labelProps: {
-                optional?: React.ReactNode;
-              } = {};
-              return (
-                <Step key={label} {...stepProps}>
-                  <StepLabel {...labelProps}>
-                    <Typography color="secondary">{label}</Typography>
-                  </StepLabel>
-                </Step>
-              );
-            })
-          : ""}
-      </Stepper>
-      {activeStep === steps.length ? (
-        <>
-          <div className="min-h-[80vh] pt-10 flex flex-col justify-center items-center">
-            <Typography sx={{ mt: 2, mb: 1 }}>
-              You have successfully Verified. Thank you For your Response.
-            </Typography>
-            <img src={VerifiedImage} alt="loading..." />
-            <Button type="submit" onClick={handleDone}>
-              Done
-            </Button>
-          </div>
-        </>
-      ) : (
-        <form onSubmit={handleSubmit(handleNext)}>
-          <div className="min-h-[80vh] pt-10">
-            {error.length ? (
-              <p className="text-red-600 text-sm text-center">{error}</p>
-            ) : (
-              ""
-            )}
-            <ListFields
-              tab={tabname[steps[activeStep]]}
-              register={register}
-              fields={fields}
-            />
-          </div>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Back
-            </Button>
-            <Box sx={{ flex: "1 1 auto" }} />
-            <Button type="submit">
-              {activeStep === steps.length - 1 ? "Finish" : "Next"}
-            </Button>
-          </Box>
-        </form>
-      )}
+      <div className="w-8/12">
+        <Loader open={loading} />
+        <Stepper activeStep={activeStep}>
+          {steps.length > 0
+            ? steps?.map((label) => {
+                const stepProps: { completed?: boolean } = {};
+                const labelProps: {
+                  optional?: React.ReactNode;
+                } = {};
+                return (
+                  <Step key={label} {...stepProps}>
+                    <StepLabel {...labelProps}>
+                      <Typography color="secondary">{label}</Typography>
+                    </StepLabel>
+                  </Step>
+                );
+              })
+            : ""}
+        </Stepper>
+        {activeStep === steps.length ? (
+          <>
+            <div className="min-h-[80vh] pt-10 flex flex-col justify-center items-center">
+              <h1 className="font-bold mb-3">
+                You have successfully Verified. Thank you For your Response.
+              </h1>
+              <img className="w-2/5" src={VerifiedImage} alt="loading..." />
+              <Button type="submit" onClick={handleDone}>
+                Done
+              </Button>
+            </div>
+          </>
+        ) : (
+          <form onSubmit={handleSubmit(handleNext)}>
+            <div className="min-h-[80vh] pt-10">
+              {error.length ? (
+                <p className="text-red-600 text-sm text-center">{error}</p>
+              ) : (
+                ""
+              )}
+              <ListFields
+                tab={tabname[steps[activeStep]]}
+                register={register}
+                fields={fields}
+              />
+            </div>
+            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+              <Button
+                color="inherit"
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                sx={{ mr: 1 }}
+              >
+                Back
+              </Button>
+              <Box sx={{ flex: "1 1 auto" }} />
+              <Button type="submit">
+                {activeStep === steps.length - 1 ? "Finish" : "Next"}
+              </Button>
+            </Box>
+          </form>
+        )}
+      </div>
     </Box>
   );
 }
