@@ -67,7 +67,9 @@ export default function Fields() {
       } else {
         return {
           ...prev,
-          [category]: [{ name, visibilty: true, options, inputType, validations: rules, }],
+          [category]: [
+            { name, visibilty: true, options, inputType, validations: rules },
+          ],
         };
       }
     });
@@ -75,7 +77,8 @@ export default function Fields() {
   };
 
   return (
-    <>
+    <div className="p-3">
+      <h1 className="font-bold text-lg ms-3 mt-3 mb-3">Fields</h1>
       {fieldData &&
         [
           "personalInfoFields",
@@ -112,6 +115,6 @@ export default function Fields() {
         handleClose={() => setOpen(false)}
         message="Successfully updated the Field data."
       />
-    </>
+    </div>
   );
 }

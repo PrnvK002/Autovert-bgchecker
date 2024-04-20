@@ -11,7 +11,7 @@ import ListFields from "../Components/ListFields.component";
 import { useNavigate } from "react-router-dom";
 import Loader from "../Components/Loader.component";
 import { validateStep } from "../validation/validator";
-import { udpateDetails } from "../redux/reducer/user.reducer";
+import { logout, udpateDetails } from "../redux/reducer/user.reducer";
 import { handleFileupload } from "../utils/fileupload.util";
 import { useForm } from "react-hook-form";
 // const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
@@ -39,7 +39,6 @@ export default function BacgroundVerification() {
   );
 
   useEffect(() => {
-    console.log("orer", typeof order);
     if (order.length) setSteps(order);
   }, [order]);
 
@@ -89,6 +88,8 @@ export default function BacgroundVerification() {
   const handleNext = (data: any) => {
     console.log("setdata", data);
     const err = validateStep(fields, data, tabname[steps[activeStep]]);
+    console.log("error", err);
+
     if (err) {
       setError(err);
     } else {
@@ -101,12 +102,13 @@ export default function BacgroundVerification() {
     }
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  const handleDone = () => {
+    dispatch(logout());
+    navigate("/login");
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   return (
@@ -141,11 +143,10 @@ export default function BacgroundVerification() {
               You have successfully Verified. Thank you For your Response.
             </Typography>
             <img src={VerifiedImage} alt="loading..." />
+            <Button type="submit" onClick={handleDone}>
+              Done
+            </Button>
           </div>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleReset}>Reset</Button>
-          </Box>
         </>
       ) : (
         <form onSubmit={handleSubmit(handleNext)}>

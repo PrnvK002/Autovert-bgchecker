@@ -87,15 +87,17 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
+      if(state.user.role !== "Admin"){
+        state.fields = {};
+        state.template = {};
+        sessionStorage.removeItem("order");
+        sessionStorage.removeItem("fields");
+        sessionStorage.removeItem("template");
+      }
       state.user = {};
-      state.fields = {};
-      state.template = {};
       state.applicants = [];
       state.applicant = {};
-      sessionStorage.removeItem("order");
-      sessionStorage.removeItem("fields");
       sessionStorage.removeItem("user");
-      sessionStorage.removeItem("template");
       localStorage.removeItem("token");
     },
   },

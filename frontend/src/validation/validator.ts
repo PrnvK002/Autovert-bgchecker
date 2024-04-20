@@ -1,16 +1,23 @@
 const validatorObj: any = {
   required: (params: any, field: any, data: any) => {
+    console.log("required", data[field.name], field);
+    if (field.inputType === "file") {
+      console.log("required", data[field.name].length, field);
+      if (!data[field.name].length) {
+        return `${field.name} is required!`;
+      }
+    }
     if (!data[field.name]) {
       return `${field.name} is required!`;
     }
   },
   onlynumbers: (params: any, field: any, data: any) => {
-    if (!isNaN(data[field.name]) && !isNaN(parseFloat(data[field.name]))) {
+    if (isNaN(data[field.name]) && isNaN(parseFloat(data[field.name]))) {
       return `Please add a valid ${field.name}! Can only contain numbers characters not allowed.`;
     }
   },
   onlycharacters: (params: any, field: any, data: any) => {
-    if (/^[a-zA-Z]+$/.test(data[field.name])) {
+    if (/^[a-zA-Z\s]+$/.test(data[field.name])) {
       return "";
     } else {
       return `Please add a valid ${field.name}! Can only contain characters numbers not allowed.`;
@@ -32,16 +39,24 @@ export const validateStep = (fields: any, data: any, activeTab: string) => {
   console.log("data on validation setp", data, fields);
   let error = "";
   for (let field of fields[activeTab]) {
-    for (let validation of field.validations) {
-      error = validatorObj[validation.ruleName](validation.value, field, data);
+    if (field.visibilty) {
+      for (let validation of field.validations) {
+        error = validatorObj[validation.ruleName](
+          validation.value,
+          field,
+          data
+        );
+        if (error) {
+          break;
+        } else {
+          continue;
+        }
+      }
       if (error) {
         break;
       } else {
         continue;
       }
-    }
-    if (error) {
-      break;
     } else {
       continue;
     }

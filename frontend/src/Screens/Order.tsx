@@ -6,15 +6,17 @@ import { useDispatch } from "react-redux";
 import { getVersion } from "../redux/reducer/version.reducer";
 
 export default function Order() {
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getVersion() as any);
   }, [dispatch]);
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <Container />
-    </DndProvider>
+    <>
+      <h1 className="font-bold text-lg ms-3 mt-3 mb-3">Order</h1>
+      <DndProvider backend={HTML5Backend}>
+        <Container />
+      </DndProvider>
+    </>
   );
 }
